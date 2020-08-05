@@ -1,0 +1,110 @@
+#Main site
+telec16.fr:443, www.telec16.fr:443 {
+
+	# Set this path to your site's directory.
+	root * /usr/share/caddy/main
+
+	# Logs
+	log {
+		output file /var/log/caddy/main.log
+	}
+
+	# Errors
+	import handle_errors
+
+	# Enable the static file server.
+	# templates
+	file_server
+}
+
+#Old site
+old.telec16.fr:443, www.old.telec16.fr:443 {
+
+	# Set this path to your site's directory.
+	root * /usr/share/caddy/old
+
+	# Logs
+	log {
+		output file /var/log/caddy/old.log
+	}
+
+	# Errors
+	import handle_errors
+	
+	# PHP
+	php_fastcgi {$TELEC_PHP_IP}:9000 {
+	        split .php
+	        index index.php
+		root /var/www/html
+	}
+	
+	# Enable the static file server.
+	file_server browse
+}
+
+#Bots
+bot.telec16.fr:443, www.bot.telec16.fr:443 {
+
+	# Set this path to your site's directory.
+	root * /usr/share/caddy/bots
+
+	# Enable the static file server.
+	# templates
+	file_server
+}
+
+#Private site
+private.telec16.fr:443, www.private.telec16.fr:443 {
+
+	# Set this path to your site's directory.
+	root * /usr/share/caddy/private
+	
+	# Authentification
+	basicauth * {
+		import /creds/telec
+        }
+#	basicauth clek/* {
+#		import /creds/clek
+#        }
+
+	# Errors
+	import handle_errors
+
+	# Enable the static file server.
+	# templates
+	file_server browse
+}
+
+#Dev site
+dev.telec16.fr:443, www.dev.telec16.fr:443 {
+
+	# Set this path to your site's directory.
+	root * /usr/share/caddy/dev
+
+	# Authentification
+	basicauth * {
+		import /creds/admin
+        }
+
+	# Errors
+	import handle_errors
+	
+	# Enable the static file server.
+	templates
+	file_server browse
+}
+
+#Music server
+music.telec16.fr:443, www.music.telec16.fr:443 {
+
+	# Configure reverse proxy
+	reverse_proxy {$TELEC_MUSIC_IP}:4040
+}
+
+#Parts server
+parts.telec16.fr:443, www.parts.telec16.fr:443 {
+
+	# Configure reverse proxy
+	reverse_proxy {$TELEC_PARTS_IP}:80
+}
+

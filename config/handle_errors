@@ -1,0 +1,4 @@
+handle_errors {
+	rewrite * /{http.error.status_code}
+	reverse_proxy https://http.cat
+}

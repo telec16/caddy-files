@@ -1,0 +1,36 @@
+version: '3.3'
+services:
+
+  web:
+    image: caddy
+    container_name: telec_caddy
+    ports:
+      - "16016:443"
+    volumes:
+      - ./site:/usr/share/caddy
+      - ./config/Caddyfile:/etc/caddy/Caddyfile
+      - ./config/handle_errors:/etc/caddy/handle_errors
+      - ./data/caddy_data:/data
+      - ./data/log:/var/log/caddy
+      - ./data/creds:/creds
+    environment:
+      - TELEC_VPN_IP=localhost
+      - TELEC_PHP_IP=telec_php
+      - TELEC_MUSIC_IP=telec_music
+      - TELEC_PARTS_IP=telec_parts
+    networks:
+      - telec_vip
+    restart: unless-stopped
+
+  php:
+    image: php:7.4-fpm
+    container_name: telec_php
+    volumes:
+      - ./site/old:/var/www/html
+    networks:
+      - telec_vip
+    restart: unless-stopped
+
+networks:
+  telec_vip:
+    external: true
