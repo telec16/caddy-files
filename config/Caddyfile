@@ -108,3 +108,10 @@ parts.telec16.fr:443, www.parts.telec16.fr:443 {
 	reverse_proxy {$TELEC_PARTS_IP}:80
 }
 
+#Framadate server
+JTLCD.telec16.fr:443 {
+
+	# Configure reverse proxy
+	reverse_proxy {$TELEC_DATE_IP}:80
+}
+

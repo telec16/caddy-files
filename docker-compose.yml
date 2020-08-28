@@ -18,6 +18,7 @@ services:
       - TELEC_PHP_IP=telec_php
       - TELEC_MUSIC_IP=telec_music
       - TELEC_PARTS_IP=telec_parts
+      - TELEC_DATE_IP=telec_date
     networks:
       - telec_vip
     restart: unless-stopped
